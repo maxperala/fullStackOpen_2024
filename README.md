@@ -1,0 +1,1 @@
+Tästä repositiosta löytyy FullStackOpen tehtävien ratkaisut.
