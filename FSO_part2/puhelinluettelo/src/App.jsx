@@ -3,12 +3,14 @@ import AddNewForm from './components/AddNewForm';
 import Filter from './components/Filter';
 import Phonebook from './components/Phonebook';
 import phonebookServices from './services/phonebookServices';
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [notification, setNotification] = useState({message: "", isError: false, show: false});
   
   
   const fetchNumbers = () => {
@@ -38,27 +40,45 @@ const App = () => {
     setNewNumber("");
   }
 
+  const showNotification = (payload) => {
+
+    let newNotif = notification;
+    newNotif.show = true;
+    if (payload.error) {
+      newNotif.isError = true;
+      newNotif.message = payload.error;
+    } else {
+      newNotif.isError = false;
+      newNotif.message = payload.message;
+    }
+    setNotification(newNotif);
+    setTimeout(() => {
+      setNotification({message: "", isError: false, show: false});
+      
+    }, 2000)
+  }
+
   const deleteUser = (event) => {
-    console.log(event.target.id);
     const id = Number(event.target.id);
     const user = persons.filter((p) => Number(p.id) === id)[0];
 
     if (!window.confirm(`Delete ${user.name}?`)) return;
-    phonebookServices.deletePhoneNumber(user).then((data) => {
-      console.log(data);
+    const response = phonebookServices.deletePhoneNumber(user);
+    response.then((payload) => {
+      showNotification(payload);
       fetchNumbers();
+
     })
+    clearFields();
     
 
 
 
   }
 
-  const updateUser = (user) => {
-    phonebookServices.updatePhoneNumber(user).then((resp) => {
-      console.log(resp)
-      fetchNumbers();
-    })
+  const updateUser = async (user) => {
+    const resp = await phonebookServices.updatePhoneNumber(user);
+    return resp;
   }
 
   const addUser = (event) => {
@@ -70,14 +90,22 @@ const App = () => {
 
     if (userList.length != 0) {
       if (newNumber === userList[0].number) {
-        alert(`${newName} is already added to the phonebook`);
+        showNotification({error: "Already in the phonebook!"});
         clearFields();
         return;
       }
       if (!window.confirm(`${userList[0].name} is already in the phonebook, update number?`)) return;
-      updateUser({...userList[0], number: newNumber});
+      const response = updateUser({...userList[0], number: newNumber});
+
+      response.then((payload) => {
+        showNotification(payload);
+        fetchNumbers();
+      })
       clearFields();
       return;
+      
+
+      
 
       
     }
@@ -85,19 +113,28 @@ const App = () => {
     if (persons.length === 0) {
       const newPersons = persons.concat({name: newName, number: newNumber, id: "1"});
       setPersons(newPersons);
-      phonebookServices.addPhoneNumber({name: newName, number: newNumber, id: "1"});
-      clearFields
+      const response = phonebookServices.addPhoneNumber({name: newName, number: newNumber, id: "1"});
+      response.then((payload) => {
+        showNotification(payload);
+        fetchNumbers();
+      })
+      clearFields();
       return;
     }
 
     const newPersons = persons.concat({name: newName, number: newNumber, id: `${(Number(persons[persons.length - 1].id) + 1)}`});
     setPersons(newPersons);
-    phonebookServices.addPhoneNumber({name: newName, number: newNumber, id: `${newPersons[newPersons.length - 1].id}`});
+    const response = phonebookServices.addPhoneNumber({name: newName, number: newNumber, id: `${newPersons[newPersons.length - 1].id}`});
+    response.then((payload) => {
+      showNotification(payload);
+      fetchNumbers();
+    })
     clearFields();
   }
 
   return (
     <div>
+      {notification.show ? <Notification message={notification.message} isError={notification.isError} /> : null}
       <h2>Phonebook</h2>
       <Filter filter={filter} updateFilter={updateFilter} />
       <AddNewForm addUser={addUser} setName={setName} setNumber={setNumber} newName={newName} newNumber={newNumber} />

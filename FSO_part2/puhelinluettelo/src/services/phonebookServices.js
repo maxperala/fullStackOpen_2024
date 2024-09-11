@@ -10,7 +10,7 @@ const getAllNumbers = async () => {
         return {};
     } catch (e) {
         console.log(e)
-        return {}
+        return {error: "Failed to fetch numbers"}
     }
     
 }
@@ -19,10 +19,11 @@ const addPhoneNumber = async (person) => {
 
     try {
         const response = await axios.post(`${baseURL}/persons`, person);
-        if (response.status === 201) return response.data;
+        if (response.status === 201) return {message: `Added ${response.data.name}`};
         return {error: "Failed adding phone number."};
     } catch (e) {
-        return {error: e}
+        console.log(e);
+        return {error: "Failed adding phone number."}
     }
     
     
@@ -31,10 +32,13 @@ const addPhoneNumber = async (person) => {
 const deletePhoneNumber = async (person) => {
     try {
         const response = await axios.delete(`${baseURL}/persons/${person.id}`);
-        if (response.status === 200) return response.data;
+        console.log(response);
+        if (response.status === 200) return {message: `${response.data.name} deleted`};
         return {error: "Failed to delete entry."};
     } catch (e) {
-        return {error: e}
+        if (e.response && e.response.status === 404) return {error: `${person.name} is already removed.`};
+        console.log(e)
+        return {error: "Failed to delete entry."};
     }
     
 }
@@ -42,9 +46,11 @@ const deletePhoneNumber = async (person) => {
 const updatePhoneNumber = async (person) => {
     try {
         const response = await axios.put(`${baseURL}/persons/${person.id}`, person);
-        return response.data;
+        return {message: `${response.data.name} updated`};
     } catch (e) {
-        return ({error: e})
+    
+        console.log(e);
+        return ({error: "Failed to update phone-number"});
     }
     
 }
