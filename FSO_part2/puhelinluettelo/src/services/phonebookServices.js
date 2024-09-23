@@ -20,19 +20,20 @@ const addPhoneNumber = async (person) => {
     try {
         const response = await axios.post(`${baseURL}/persons`, person);
         if (response.status === 201) return {message: `Added ${response.data.name}`};
+        if (response.status === 400) return {error: "Invalid phone number"};
         return {error: "Failed adding phone number."};
     } catch (e) {
         console.log(e);
-        return {error: "Failed adding phone number."}
+        return {error: e.response?.data?.error || "Failed adding phone number."}
     }
     
     
 }
 
 const deletePhoneNumber = async (person) => {
+    
     try {
         const response = await axios.delete(`${baseURL}/persons/${person.id}`);
-        console.log(response);
         if (response.status === 200) return {message: `${response.data.name} deleted`};
         return {error: "Failed to delete entry."};
     } catch (e) {

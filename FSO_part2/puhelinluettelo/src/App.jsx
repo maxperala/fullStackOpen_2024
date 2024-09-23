@@ -58,18 +58,20 @@ const App = () => {
     }, 2000)
   }
 
-  const deleteUser = (event) => {
-    const id = Number(event.target.id);
-    const user = persons.filter((p) => Number(p.id) === id)[0];
+  const deleteUser = async (event) => {
+    
+    const id = event.target.id;
+    const user = persons.filter((p) => p.id === id)[0];
+    
 
     if (!window.confirm(`Delete ${user.name}?`)) return;
-    const response = phonebookServices.deletePhoneNumber(user);
-    response.then((payload) => {
-      showNotification(payload);
-      fetchNumbers();
-
-    })
+    console.log("CALLING PHONEBOOK")
+    const payload = await phonebookServices.deletePhoneNumber(user);
+    console.log("payload", payload)
+    showNotification(payload);
+    fetchNumbers();
     clearFields();
+      
     
 
 
