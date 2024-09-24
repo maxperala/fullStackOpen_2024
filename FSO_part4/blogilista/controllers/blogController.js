@@ -16,4 +16,15 @@ const addBlog = async (content) => {
     
 }
 
-module.exports = {addBlog, getAllBlogs};
+const deleteBlog = async (id) => {
+    const result = await Blog.findByIdAndDelete(id);
+    return result;
+
+}
+
+const updateBlog = async (blog) => {
+    const result = await Blog.findByIdAndUpdate(blog.id, blog, {new: true, runValidators: true});
+    return result;
+}
+
+module.exports = {addBlog, getAllBlogs, deleteBlog, updateBlog};
