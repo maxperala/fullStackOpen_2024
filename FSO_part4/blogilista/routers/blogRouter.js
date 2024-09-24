@@ -13,6 +13,7 @@ blogRouter.get('/', async (request, response, next) => {
 blogRouter.post('/', async (request, response, next) => {
     try {
         const blogBody = request.body;
+        blogBody.user = request.user.id;
         const result = await blogController.addBlog(blogBody);
         response.status(201).json(result);
     } catch (e) {

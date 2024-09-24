@@ -5,4 +5,15 @@ const alreadyExists = async (username) => {
     return users.length > 0 ? true : false;
 }
 
-module.exports = {alreadyExists};
+const validatePassword = (pass) => {
+    if (pass.length < 3) return false;
+    return true;
+}
+
+const findByUsername = async (username) => {
+    const user = await User.findOne({username});
+    return user ? user : undefined;
+}
+
+
+module.exports = {alreadyExists, validatePassword, findByUsername};

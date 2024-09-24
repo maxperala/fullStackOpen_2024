@@ -1,5 +1,6 @@
 const logger = require("./logger");
-
+const jwt = require("jsonwebtoken");
+const config = require("./config");
 
 const errorHandler = (error, req, res, next) => {
 
@@ -19,9 +20,47 @@ const errorHandler = (error, req, res, next) => {
         return res.status(400).json({error: error.message})
     }
 
+    if (error.name === "PasswordTooShort") {
+        return res.status(400).json({error: error.message})
+    }
+
+    if (error.name === "UsernameMissing") {
+        return res.status(400).json({error: error.message})
+    }
+    
+    if (error.name === "UserNotFound") {
+        return res.status(404).json({error: error.message})
+    }
+
+    if (error.name === "IncorrectPassword") {
+        return res.status(401).json({error: error.message})
+    }
+
+    if (error.name === "JsonWebTokenError") {
+        return res.status(400).json({error: "Token missing or invalid"})
+    }
 
     next(error);
 }
 
 
-module.exports = {errorHandler};
+const tokenExtract = (req, res, next) => {
+    const auth = req.get('authorization');
+    if (auth && auth.startsWith('Bearer ')) {
+        const token = auth.replace('Bearer ', '');
+        const decode = jwt.verify(token, config.SECRET);
+        if (!decode) {
+            return res.status(401).json({
+                error: "Invalid token"
+            })
+        }
+        req.user = decode;
+        next();
+        return;
+    }
+    
+    res.status(401).json({error: "Token not provided"});
+    
+}
+
+module.exports = {errorHandler, tokenExtract};
