@@ -98,6 +98,10 @@ describe("GET blogs tests", () => {
         const hasID = res.body.reduce((hasID, item) => item.id ? true : false, true);
         assert.strictEqual(hasID, true);
     })
+    test("Get blogs without token succeeds", async () => {
+        const res = await api.get("/api/blogs");
+        assert.strictEqual(res.status, 200);
+    } )
 })
 
 describe("Add blog tests", () => {
@@ -199,8 +203,14 @@ describe("Updating blogs test", () => {
 })
 
 describe("Unauthorized tests", () => {
-    test("Get blogs no token", async() => {
-        const res = await api.get("/api/blogs");
+    test("Post a blog no token", async() => {
+        const res = await api.post("/api/blogs").send({
+            title: "Testinki",
+            author: "Testi Taavi",
+            url: "http://eimitöön.fi/",
+            likes: 1
+        });
+
         assert.strictEqual(res.status, 401);
     })
 

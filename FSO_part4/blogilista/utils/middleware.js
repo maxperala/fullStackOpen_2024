@@ -62,7 +62,10 @@ const tokenExtract = (req, res, next) => {
         next();
         return;
     }
-    
+    if (req.method === "GET") {
+        next();
+        return;
+    }
     res.status(401).json({error: "Token not provided"});
     
 }
