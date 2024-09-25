@@ -1,5 +1,6 @@
 const Blog = require("../models/blog");
 const User = require("../models/user");
+const {AuthenticationError} = require("../utils/appErrors");
 
 const getAllBlogs = async () => {
     const blogs = await Blog.find({}).populate('user');
@@ -20,10 +21,12 @@ const addBlog = async (content) => {
     
 }
 
-const deleteBlog = async (id) => {
-    const result = await Blog.findByIdAndDelete(id);
-    const user = await User.findById(result._id);
+const deleteBlog = async (id, userObj) => {
+    const result = await Blog.findById(id);
+    if (result.user.toString() !== userObj.id) throw new AuthenticationError();
+    const user = await User.findById(result.user.toString());
     user.blogs = user.blogs.filter((blogId) => blogId.toString() != id.toString());
+    await Blog.findByIdAndDelete(id);
     await user.save();
     return result;
 

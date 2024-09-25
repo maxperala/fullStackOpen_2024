@@ -150,7 +150,7 @@ describe("Deleting blog tests", () => {
 
         const res = await api.get("/api/blogs").set("authorization", `Bearer ${TOKEN}`);
         const blogs = res.body;
-        
+
         await api.delete(`/api/blogs/${blogs[0].id}`).set("authorization", `Bearer ${TOKEN}`);
         
 
@@ -170,15 +170,16 @@ describe("Updating blogs test", () => {
     test("Update an existing blog", async () => {
         const res = await api.get("/api/blogs").set("authorization", `Bearer ${TOKEN}`);
         const blogToDelete = res.body[0];
+        
         const result = await api.put("/api/blogs").set("authorization", `Bearer ${TOKEN}`).send({
             ...blogToDelete,
-            likes: blogToDelete.likes + 1
+            likes: blogToDelete.likes + 1,
+            user: blogToDelete.user.id
         })
         const res2 = await api.get("/api/blogs").set("authorization", `Bearer ${TOKEN}`);
         const updatedBlog = res2.body.reduce((match, curr) => blogToDelete.id === curr.id ? curr : match, {});
 
         assert.strictEqual(updatedBlog.id, blogToDelete.id);
-        console.log("blogToDelete", blogToDelete, "updatedBlog", updatedBlog);
         assert.strictEqual((blogToDelete.likes + 1), updatedBlog.likes);
 
     })
@@ -206,6 +207,39 @@ describe("Unauthorized tests", () => {
     test("Get blogs invalid token", async () => {
         const res = await api.get("/api/blogs").set("authorization", `Bearer 8935h3hgwskbf!`);
         assert.strictEqual(res.status, 400);
+    })
+    
+    test("Remove blog that is not own", async () => {
+        const sampleBlog = {
+            title: "Saku Sammakko",
+            author: "Saku Samis",
+            url: "http://sakunsivu.fi/",
+            likes: 2
+        }
+        // Add a new blog
+        const res = await api.post("/api/blogs").set("authorization", `Bearer ${TOKEN}`).send(sampleBlog);
+        const blog = res.body;
+
+        // Add a new user
+        await api.post("/api/users").send({
+            username: "testitopi2",
+            name: "Topitopi",
+            password: "topinsaliz"
+        });
+
+        const loginResponse = await api.post("/api/login").send({
+            username: "testitopi2",
+            password: "topinsaliz"
+        });
+
+        const tok = loginResponse.body.token;
+
+        // Delete a blog that is not created by this user
+
+        const response = await api.delete(`/api/blogs/${blog.id}`).set("authorization", `Bearer ${tok}`);
+        assert.strictEqual(response.status, 401);
+
+
     })
 })
 

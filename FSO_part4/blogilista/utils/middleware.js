@@ -40,6 +40,10 @@ const errorHandler = (error, req, res, next) => {
         return res.status(400).json({error: "Token missing or invalid"})
     }
 
+    if (error.name === "AuthenticationError") {
+        return res.status(401).json({error: error.message})
+    }
+
     next(error);
 }
 

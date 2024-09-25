@@ -33,4 +33,11 @@ class IncorrectPassword extends Error {
     }
 }
 
-module.exports = {UsernameExistsOrMissing, PasswordTooShort, UsernameMissing, UserNotFound, IncorrectPassword};
+class AuthenticationError extends Error {
+    constructor(message = "You do not have access to this operation") {
+        super(message)
+        this.name = "AuthenticationError"
+    }
+}
+
+module.exports = {UsernameExistsOrMissing, PasswordTooShort, UsernameMissing, UserNotFound, IncorrectPassword, AuthenticationError};
