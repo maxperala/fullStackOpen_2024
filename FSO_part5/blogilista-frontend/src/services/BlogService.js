@@ -3,10 +3,11 @@ import axios from "axios";
 
 
 class BlogService {
-    constructor(token) {
+    constructor(user) {
+        this.user = user;
         this.config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${user.token}`
             }
         }
         this.baseURL = "http://localhost:3000/api/blogs";
@@ -31,6 +32,33 @@ class BlogService {
             console.log(e);
             return {
                 error: "Creating the blog failed"
+            }
+        }
+    }
+    // I changed this a little bit, since if there is only the option to like it makes no sense
+    // to post the full object, also patched backend so that it can only like...
+    // PUT is maybe not the right protocol now but I leave it as is if in the future
+    // we implement a secure way to update blogs
+    async likeBlog(blog) {
+        try {
+            const res = await axios.put(`${this.baseURL}/${blog.id}`, {}, this.config);
+            return res.data;
+        } catch (e) {
+            console.log(e);
+            return {
+                error: "Liking blog failed"
+            }
+        }
+    }
+
+    async removeBlog(id) {
+        try {
+            const res = await axios.delete(`${this.baseURL}/${id}`, this.config)
+            return res.data;
+        } catch (e) {
+            console.log(e);
+            return {
+                error: "Error deleting blog"
             }
         }
     }

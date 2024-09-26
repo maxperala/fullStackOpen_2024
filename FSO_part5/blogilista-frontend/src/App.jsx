@@ -44,7 +44,7 @@ function App() {
     <div>
       {notif()}
       <LoggedIn setUser={setUser} user={user} showNotification={showNotification}/>
-      <Blogs token={user.token} showNotification={showNotification}/>
+      <Blogs user={user} showNotification={showNotification}/>
     </div>
   )
 

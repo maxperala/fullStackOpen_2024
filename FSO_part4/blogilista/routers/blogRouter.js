@@ -32,10 +32,13 @@ blogRouter.delete('/:id', async (request, response, next) => {
     }
 })
 
-blogRouter.put('/', async (request, response, next) => {
+blogRouter.put('/:id', async (request, response, next) => {
     try {
-        const blogBody = request.body;
-        const result = await blogController.updateBlog(blogBody);
+        // I wanted to change this so that the only thing possible to do is to like, since otherwise there is obvious security flaws in the system
+        //const blogBody = request.body;
+        //const result = await blogController.updateBlog(blogBody);
+        const id = request.params.id;
+        await blogController.likeBlog(id);
         response.status(204).end();
 
     } catch (e) {

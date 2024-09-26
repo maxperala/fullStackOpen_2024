@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const CreateNewDialog = ({showNotification, bs, update}) => {
 
+    const [visible, setVisible] = useState(false);
     const [data, setData] = useState({
         title: "",
         author: "",
@@ -23,10 +24,17 @@ const CreateNewDialog = ({showNotification, bs, update}) => {
         update();
         showNotification(`Succesfully added a new blog by ${resp.author}`);
         setData({title: "", author: "", url: ""});
+        setVisible(false);
 
     }
 
     
+    if (!visible) {
+        return (
+            <button onClick={() => setVisible(true)}>Create new</button>
+        )
+    }
+
     return (
         <div>
             <h3>Create a new blog:</h3>
@@ -39,6 +47,7 @@ const CreateNewDialog = ({showNotification, bs, update}) => {
                 <br/>
                 <button type={"submit"}>Create</button>
             </form>
+            <button onClick={() => setVisible(false)}>Hide</button>
         </div>
     )
 }

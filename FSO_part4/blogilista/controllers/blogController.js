@@ -33,8 +33,15 @@ const deleteBlog = async (id, userObj) => {
 }
 
 const updateBlog = async (blog) => {
-    const result = await Blog.findByIdAndUpdate(blog.id, blog, {new: true, runValidators: true});
+    const result = await Blog.findById(blog.id, blog, {new: true, runValidators: true});
     return result;
 }
 
-module.exports = {addBlog, getAllBlogs, deleteBlog, updateBlog};
+const likeBlog = async (id) => {
+    const blog = await Blog.findById(id);
+    blog.likes = blog.likes + 1;
+    await blog.save();
+    return blog;
+}
+
+module.exports = {addBlog, getAllBlogs, deleteBlog, updateBlog, likeBlog};
