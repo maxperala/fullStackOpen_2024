@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import BlogService from "../services/blogService";
 import CreateNewDialog from "./CreateNew";
 import Blog from "./Blog";
+import PropTypes from "prop-types";
 
 const Blogs = ({user, showNotification}) => {
     const bs = new BlogService(user);
@@ -33,6 +34,9 @@ const Blogs = ({user, showNotification}) => {
 
 }
 
-
+Blogs.propTypes = {
+    user: PropTypes.object.isRequired,
+    showNotification: PropTypes.func.isRequired
+}
 
 export default Blogs;

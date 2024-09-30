@@ -1,4 +1,6 @@
 import { useState } from "react"
+import PropTypes from "prop-types";
+import BlogService from "../services/blogService";
 
 const blogStyle = {
     paddingTop: 10,
@@ -56,6 +58,13 @@ const Blog = ({blog, bs, showNotification, updateBlogs}) => {
             <button onClick={() => setVisible(true)}>view</button>
         </div>
     )
+}
+
+Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    bs: PropTypes.instanceOf(BlogService).isRequired,
+    showNotification: PropTypes.func.isRequired,
+    updateBlogs: PropTypes.func.isRequired
 }
 
 
