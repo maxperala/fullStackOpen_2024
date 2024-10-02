@@ -21,8 +21,8 @@ const Blogs = ({user, showNotification}) => {
             <CreateNewDialog showNotification={showNotification} bs={bs} update={updateBlogs}/>
             <h3>Blogs</h3>
             <ul>
-                {blogs && blogs.sort((a, b) => b.likes - a.likes).map((blog) => {
-                return (<li key={blog.id}><Blog blog={blog} bs={bs} showNotification={showNotification} updateBlogs={updateBlogs}/></li>)
+                {blogs && blogs.sort((a, b) => b.likes - a.likes).map((blog, i) => {
+                return (<li key={blog.id}><Blog blog={blog} bs={bs} showNotification={showNotification} updateBlogs={updateBlogs} index={i}/></li>)
                 })}
             </ul>
             

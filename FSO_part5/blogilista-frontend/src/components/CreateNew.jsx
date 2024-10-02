@@ -31,7 +31,7 @@ const CreateNewDialog = ({showNotification, bs, update}) => {
     
     if (!visible) {
         return (
-            <button onClick={() => setVisible(true)}>Create new</button>
+            <button id="show-create" onClick={() => setVisible(true)}>Create new</button>
         )
     }
 
@@ -39,13 +39,13 @@ const CreateNewDialog = ({showNotification, bs, update}) => {
         <div>
             <h3>Create a new blog:</h3>
             <form onSubmit={createNew}>
-                title: <input className="title-input" value={data.title} onChange={(event) => setData({...data, title: event.target.value})} />
+                title: <input className="title-input" id="title-input" value={data.title} onChange={(event) => setData({...data, title: event.target.value})} />
                 <br/>
-                author: <input className="author-input" value={data.author} onChange={(event) => setData({...data, author: event.target.value})}/>
+                author: <input className="author-input" id="author-input" value={data.author} onChange={(event) => setData({...data, author: event.target.value})}/>
                 <br/>
-                url: <input className="url-input" value={data.url} onChange={(event) => setData({...data, url: event.target.value})}/>
+                url: <input className="url-input" id="url-input" value={data.url} onChange={(event) => setData({...data, url: event.target.value})}/>
                 <br/>
-                <button type={"submit"}>Create</button>
+                <button type={"submit"} id="create-button">Create</button>
             </form>
             <button onClick={() => setVisible(false)}>Hide</button>
         </div>

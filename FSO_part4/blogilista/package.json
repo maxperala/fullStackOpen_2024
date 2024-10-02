@@ -7,7 +7,8 @@
     "test": "NODE_ENV=test node --test",
     "test_user": "NODE_ENV=test node --test tests/userTests.test.js",
     "test_blogs": "NODE_ENV=test node --test tests/01_blogRouter.test.js",
-    "dev": "NODE_ENV=development nodemon index.js"
+    "dev": "NODE_ENV=development nodemon index.js",
+    "start:test": "NODE_ENV=test node index.js"
   },
   "author": "Max Perälä",
   "license": "ISC",

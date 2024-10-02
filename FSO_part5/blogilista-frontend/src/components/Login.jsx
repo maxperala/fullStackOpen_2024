@@ -25,14 +25,14 @@ const Login = ({setUser, showNotification}) => {
     }
 
     return (
-        <div>
-            <h2>Login</h2>
+        <div data-testid='login-form'>
+            <h2 data-testid='login-heading'>Login</h2>
             <form onSubmit={loginHandler}>
-                username: <input value={username} onChange={(event) => setUsername(event.target.value)}/>
+                username: <input id='username-field' value={username} onChange={(event) => setUsername(event.target.value)}/>
                 <br/>
-                password: <input value={password} type="password" onChange={(event) => setPassword(event.target.value)}/>
+                password: <input id='password-field' value={password} type="password" onChange={(event) => setPassword(event.target.value)}/>
                 <br/>
-                <button type={"submit"}>Login</button>
+                <button id='submit-button' type={"submit"}>Login</button>
             </form>
         </div>
     )

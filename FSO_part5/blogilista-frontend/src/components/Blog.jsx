@@ -10,7 +10,7 @@ const blogStyle = {
     marginBottom: 5
   }
 
-const Blog = ({blog, bs, showNotification, updateBlogs}) => {
+const Blog = ({blog, bs, showNotification, updateBlogs, index}) => {
 
     const [visible, setVisible] = useState(false);
     const likeBlog = async () => {
@@ -36,17 +36,17 @@ const Blog = ({blog, bs, showNotification, updateBlogs}) => {
 
     if (visible) {
         return (
-            <div style={blogStyle}>
+            <div style={blogStyle} id={`blog-div-${index}`}>
                 
                 <p>{blog.title} by {blog.author ? blog.author : "Unknown Author" }</p>
                 
                 <p>{blog.url}</p>
                 
-                <div>
-                    likes: {blog.likes} <button onClick={likeBlog}>like</button>
+                <div id={`like-div-${index}`}>
+                    likes: {blog.likes} <button id={`likebtn-${index}`} onClick={likeBlog}>like</button>
                 </div>
                 <p>Submitted by: {blog.user.name}</p>
-                {bs.user.id === blog.user.id ? <button onClick={deleteBlog}>Delete</button> : null}
+                {bs.user.id === blog.user.id ? <button onClick={deleteBlog} id={`delete-btn-${index}`}>Delete</button> : null}
                 <button onClick={() => setVisible(false)}>hide</button>
             </div>
         )
@@ -55,7 +55,7 @@ const Blog = ({blog, bs, showNotification, updateBlogs}) => {
     return (
         <div style={blogStyle}>
             <p>{blog.title} by {blog.author ? blog.author : "Unknown Author"}</p>
-            <button onClick={() => setVisible(true)}>view</button>
+            <button onClick={() => setVisible(true)} id={`show-btn-${index}`}>view</button>
         </div>
     )
 }
