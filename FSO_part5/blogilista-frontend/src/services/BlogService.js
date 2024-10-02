@@ -3,7 +3,7 @@ import axios from 'axios'
 
 
 class BlogService {
-  constructor(user) {
+  constructor(user, pseudoLiker, pseudoCreate) {
     this.user = user
     this.config = {
       headers: {
@@ -11,6 +11,12 @@ class BlogService {
       }
     }
     this.baseURL = 'http://localhost:3000/api/blogs'
+    if (pseudoLiker) {
+      this.likeBlog = pseudoLiker
+    }
+    if (pseudoCreate) {
+      this.createBlog = pseudoCreate
+    }
   }
 
   async getBlogs() {

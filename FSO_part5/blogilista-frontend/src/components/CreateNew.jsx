@@ -39,11 +39,11 @@ const CreateNewDialog = ({showNotification, bs, update}) => {
         <div>
             <h3>Create a new blog:</h3>
             <form onSubmit={createNew}>
-                title: <input value={data.title} onChange={(event) => setData({...data, title: event.target.value})} />
+                title: <input className="title-input" value={data.title} onChange={(event) => setData({...data, title: event.target.value})} />
                 <br/>
-                author: <input value={data.author} onChange={(event) => setData({...data, author: event.target.value})}/>
+                author: <input className="author-input" value={data.author} onChange={(event) => setData({...data, author: event.target.value})}/>
                 <br/>
-                url: <input value={data.url} onChange={(event) => setData({...data, url: event.target.value})}/>
+                url: <input className="url-input" value={data.url} onChange={(event) => setData({...data, url: event.target.value})}/>
                 <br/>
                 <button type={"submit"}>Create</button>
             </form>
