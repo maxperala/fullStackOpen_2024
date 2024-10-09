@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { createAnecdote, voteAnecdote } from "../reducers/anecdoteReducer";
+import { voteAnecdote } from "../reducers/anecdoteReducer";
 import { setNotification, hideNotification } from "../reducers/notificationReducer";
 
 
