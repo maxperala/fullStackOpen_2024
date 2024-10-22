@@ -1,1 +1,1 @@
-Tästä repositiosta löytyy FullStackOpen tehtävien ratkaisut.
+Tästä repositoriosta löytyy FullStackOpen tehtävien ratkaisut.
