@@ -1,0 +1,6 @@
+node_modules
+build
+*.html
+*.css
+vite.config.js
+eslint.config.js
