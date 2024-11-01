@@ -4,6 +4,7 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
 import { useApolloClient } from "@apollo/client";
+import Favourties from "./components/Favourites";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -34,6 +35,9 @@ const App = () => {
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
         {token ? (
+          <button onClick={() => setPage("favorites")}>favorites</button>
+        ) : null}
+        {token ? (
           <button onClick={() => setPage("add")}>add book</button>
         ) : null}
         {!token ? (
@@ -49,6 +53,8 @@ const App = () => {
       <NewBook show={page === "add"} />
 
       <Login show={page === "login"} setT={setToken} setPage={setPage} />
+
+      <Favourties show={page === "favorites"} />
     </div>
   );
 };

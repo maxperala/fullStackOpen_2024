@@ -28,10 +28,14 @@ const typeDefs = `
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]!
+    favoriteBooks: Favorites
     allAuthors: [Author]!
     me: User
   }
-
+  type Favorites {
+    books: [Book]!
+    genre: String!
+  }
   type Book {
     title: String!
     published: Int!
@@ -106,6 +110,15 @@ const resolvers = {
     },
     allAuthors: async () => {
       return await AuthorModel.find({});
+    },
+    favoriteBooks: async (root, args, context) => {
+      checkUser(context.user);
+      const query = { genres: { $in: [context.user.favoriteGenre] } };
+      const books = await BookModel.find(query).populate("author");
+      return {
+        books,
+        genre: context.user.favoriteGenre,
+      };
     },
   },
   Author: {
@@ -210,7 +223,7 @@ startStandaloneServer(server, {
     if (auth && auth.startsWith("Bearer ")) {
       const token = auth.split(" ")[1];
       const decode = jwt.verify(token, process.env.SECRET);
-      const user = UserModel.findById(decode);
+      const user = await UserModel.findById(decode.id);
       return { user };
     }
   },
