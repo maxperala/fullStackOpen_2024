@@ -19,8 +19,8 @@ export const validateBmiInput = (argv: Array<string>): BmiInput => {
     return {
         height: args[0],
         weight: args[1]
-    }
-}
+    };
+};
 
 export const validateExercise = (argv: Array<string>): exerInput => {
     if (argv.length < 5) throw new Error("Too few arguments");
@@ -32,6 +32,6 @@ export const validateExercise = (argv: Array<string>): exerInput => {
     return {
         target: args[0],
         values: args.slice(1)
-    }
+    };
 
-}
+};
