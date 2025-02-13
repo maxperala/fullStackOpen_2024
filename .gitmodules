@@ -1,0 +1,3 @@
+[submodule "FSO_part9/patientor-frontend"]
+	path = FSO_part9/patientor-frontend
+	url = https://github.com/maxperala/patientor
