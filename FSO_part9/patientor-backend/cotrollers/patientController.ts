@@ -1,9 +1,9 @@
 import { Patient, SafePatient, newPatient } from "../types";
-import patients from "../data/patients";
+import { PATIENTS } from "../config";
 import { v4 as uuidv4 } from "uuid";
 
 export const getSafePatients = (): SafePatient[] => {
-  const data: SafePatient[] = patients.map(
+  const data: SafePatient[] = PATIENTS.map(
     ({ id, name, dateOfBirth, gender, occupation }) => {
       return {
         id,
@@ -21,7 +21,15 @@ export const addPatient = (newP: newPatient): Patient => {
   const patient: Patient = {
     ...newP,
     id: uuidv4(),
+    entries: [],
   };
-  patients.push(patient);
+  PATIENTS.push(patient);
+  return patient;
+};
+
+export const getPatient = (id: string): Patient => {
+  const patient = PATIENTS.find((p) => p.id === id);
+
+  if (!patient) throw new Error("Invalid ID!");
   return patient;
 };

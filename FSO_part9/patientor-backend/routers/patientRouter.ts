@@ -1,5 +1,9 @@
 import { Router, Response, Request, NextFunction } from "express";
-import { getSafePatients, addPatient } from "../cotrollers/patientController";
+import {
+  getSafePatients,
+  addPatient,
+  getPatient,
+} from "../cotrollers/patientController";
 import { newPatient, Patient, SafePatient } from "../types";
 import { parsePatient, patientErrorHandler } from "../middleware";
 
@@ -21,6 +25,20 @@ patientRouter.post(
     try {
       const newP: newPatient = req.body;
       const patient: Patient = addPatient(newP);
+      res.status(200).json(patient);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+patientRouter.get(
+  "/:id",
+  (req: Request, res: Response<Patient>, next: NextFunction) => {
+    try {
+      const id: string | undefined = req.params.id;
+      if (!id) throw new Error("No patient ID provided!");
+      const patient = getPatient(id);
       res.status(200).json(patient);
     } catch (e) {
       next(e);
