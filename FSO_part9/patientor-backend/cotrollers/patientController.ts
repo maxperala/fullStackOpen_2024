@@ -1,5 +1,5 @@
 import { Patient, SafePatient, newPatient } from "../types";
-import { PATIENTS } from "../config";
+import PATIENTS from "../data/patients";
 import { v4 as uuidv4 } from "uuid";
 
 export const getSafePatients = (): SafePatient[] => {
